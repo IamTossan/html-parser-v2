@@ -4,6 +4,7 @@ type Taskable = (reject: Function, resolve: Function) => unknown;
 
 export default class Task {
     fork: Taskable;
+
     constructor(fork: Taskable) {
         this.fork = fork;
     }

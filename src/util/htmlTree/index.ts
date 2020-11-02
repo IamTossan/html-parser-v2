@@ -10,9 +10,7 @@ const SELF_CONTAINED_TAGS = [
     '!--pseudoExchange--',
 ];
 
-export const getTagName = (s: string): string => {
-    return s.split('>')[0].split(' ')[0];
-};
+export const getTagName = (s: string): string => s.split('>')[0].split(' ')[0];
 
 const getInnerText = (s: string): string => {
     const parts = s.split('>');
@@ -30,7 +28,7 @@ export default class HtmlTree {
 
     // this is specific to the tree construction
     static getSubTree(tree: IHtmlTree, path: string[]) {
-        let currentPath = [...path];
+        const currentPath = [...path];
         let currentTree = tree;
         while (currentPath.length) {
             const nextPath = <string>currentPath.shift();
@@ -48,7 +46,7 @@ export default class HtmlTree {
         tree: IHtmlTree,
         path: Array<{ tagName: string; nth: number }>,
     ) {
-        let currentPath = [...path];
+        const currentPath = [...path];
         let currentTree = tree;
         while (currentPath.length) {
             const nextPath = currentPath.shift();

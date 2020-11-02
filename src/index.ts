@@ -4,7 +4,7 @@ import { map } from './util/fp/task';
 import { readerTask, write } from './services/fileService';
 import SncfParser from './parser/SncfParser';
 
-const argv: string[] = process.argv;
+const { argv } = process;
 
 export const clean = pipe(
     (i: string) => i.replace(/\\r\\n/g, ' ').trim(),

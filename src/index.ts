@@ -35,7 +35,7 @@ if (require.main === module) {
             status: 'ok',
             result: tree.parsedData,
         };
-        const path = argv.length === 4 ? argv[4] : './tmp/out.json';
+        const path = argv.length === 4 ? argv[3] : './tmp/out.json';
         write(path, JSON.stringify(outputJson, null, 2), () => {});
     });
 }

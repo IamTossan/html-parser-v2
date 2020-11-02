@@ -8,6 +8,7 @@ const { argv } = process;
 
 export const clean = pipe(
     (i: string) => i.replace(/\\r\\n/g, ' ').trim(),
+    (i: string) => i.replace(/&nbsp;/g, ' '),
     (i: string) => i.replace(/\\\\/g, '\\'),
     (i: string) => i.replace(/\\"/g, '"'),
 );

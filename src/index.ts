@@ -19,12 +19,22 @@ const getInputStringAsync = pipe(
 );
 
 if (require.main === module) {
+    if (argv.length < 3) {
+        console.error('Not enough arguments');
+        console.log('node ./dist/src/index.js <SOURCE_FILE>');
+        console.log(
+            'node ./dist/src/index.js <SOURCE_FILE> <DESTINATION_FILE>',
+        );
+        process.exit(1);
+    }
+
     getInputStringAsync(argv).fork(console.error, (data: string) => {
         const tree = SncfParser.of(data);
         const outputJson = {
             status: 'ok',
             result: tree.parsedData,
         };
-        write('./tmp/out.json', JSON.stringify(outputJson, null, 2), () => {});
+        const path = argv.length === 4 ? argv[4] : './tmp/out.json';
+        write(path, JSON.stringify(outputJson, null, 2), () => {});
     });
 }

@@ -10,7 +10,30 @@ export default class SncfParser extends HtmlTree {
     }
 
     get details() {
-        return {};
+        const price = SncfParser.getNode(this._tree, [
+            { tagName: 'html', nth: 0 },
+            { tagName: 'body', nth: 0 },
+            { tagName: 'div', nth: 0 },
+            { tagName: 'table', nth: 1 },
+            { tagName: 'tbody', nth: 0 },
+            { tagName: 'tr', nth: 0 },
+            { tagName: 'td', nth: 0 },
+            { tagName: 'table', nth: 2 },
+            { tagName: 'tbody', nth: 0 },
+            { tagName: 'tr', nth: 0 },
+            { tagName: 'td', nth: 0 },
+            { tagName: 'table', nth: 2 },
+            { tagName: 'tbody', nth: 0 },
+            { tagName: 'tr', nth: 0 },
+            { tagName: 'td', nth: 1 },
+        ])
+            .value?.replace('€', '')
+            .replace(',', '.');
+
+        return {
+            price: parseFloat(price || '0'),
+            roundTrips: [],
+        };
     }
 
     get trips() {

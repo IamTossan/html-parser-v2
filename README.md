@@ -9,7 +9,7 @@ npm install
 ## Scripts
 
 ```
-npm run build             build the project into the ./dist/ folder
+npm run build             build the project into the ./dist folder
 npm run start             build the project and parse the sample file into the ./tmp folder
 npm run dev               run in development mode
 npm run lint              run eslint
@@ -33,6 +33,7 @@ const formattedInput = formatInput(sanitizedInput)
 
 // better
 const output = flow(
+  source,
   getInput,
   sanitize,
   format,

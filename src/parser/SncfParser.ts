@@ -87,7 +87,6 @@ export default class SncfParser extends HtmlTree {
 
         return [0, 1, 2, 3].map((n, idx) => {
             const offset = Math.floor(idx / 2);
-            console.log(idx, offset);
             return this.getRoundtrip(commonTree, n, offset);
         });
     }

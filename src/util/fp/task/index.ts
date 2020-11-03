@@ -14,7 +14,7 @@ export default class Task {
     }
 
     // ----- Pointed (Task a)
-    static of(x: Function) {
+    static of(x: any) {
         return new Task((_: Function, resolve: Function) => resolve(x));
     }
 

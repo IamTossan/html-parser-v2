@@ -5,7 +5,7 @@
     "main": "index.js",
     "scripts": {
         "build": "tsc",
-        "start": "mkdir -p tmp && npm run build && node ./dist/src/index.js ./test/input-page.html",
+        "start": "mkdir -p tmp && npm run build && node ./dist/index.js ./test/input-page.html",
         "dev": "ts-node-dev --respawn --transpile-only ./src/index.ts ./test/input-page.html",
         "lint": "eslint src/",
         "prettier": "prettier --parser typescript --write \"src/**/*.ts\"",

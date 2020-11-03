@@ -5,14 +5,10 @@ export const pickAt = (x: number) => (y: any[]) => y[x];
 export const prop = (p: string) => (o: { [i: string]: any }) => o[p];
 
 const _compose = (f: Function, g: Function) => (value: any) => f(g(value));
-export const compose = (...fns: Function[]) => {
-    if (fns.length < 1) {
-        throw new TypeError(
-            `compose requires at least one argument, ${fns.length} given.`,
-        );
-    }
+
+export function compose(...fns: Function[]) {
     return fns.reduce(_compose);
-};
+}
 
 export function pipe<A extends ReadonlyArray<unknown>, B>(
     ab: (...a: A) => B,

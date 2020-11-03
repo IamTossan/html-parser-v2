@@ -47,4 +47,29 @@ describe('util/htmlTree', () => {
         };
         expect(tree.tree).toEqual(expectedResult);
     });
+
+    it('should init a tree (pointed function)', () => {
+        const input =
+            '<head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>Confirmation de votre commande</title></head>';
+
+        const tree = HtmlTree.of(input);
+
+        const expectedResult = {
+            tagName: '',
+            children: [
+                {
+                    tagName: 'head',
+                    children: [
+                        { tagName: 'meta', children: [] },
+                        {
+                            tagName: 'title',
+                            children: [],
+                            value: 'Confirmation de votre commande',
+                        },
+                    ],
+                },
+            ],
+        };
+        expect(tree.tree).toEqual(expectedResult);
+    });
 });

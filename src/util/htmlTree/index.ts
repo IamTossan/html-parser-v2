@@ -97,7 +97,7 @@ export default class HtmlTree {
                     path.pop();
                     if (value) {
                         const currentTree = HtmlTree.getSubTree(tree, path);
-                        currentTree.value = `currentTree.value ${value}`;
+                        currentTree.value = `${currentTree.value} ${value}`;
                     }
                 }
 

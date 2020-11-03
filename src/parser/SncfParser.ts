@@ -6,7 +6,11 @@ export default class SncfParser extends HtmlTree {
     }
 
     static of(i: string) {
-        return new SncfParser(this.parseInput(i));
+        return new SncfParser(SncfParser.parseInput(i));
+    }
+
+    get roundtrips() {
+        return [];
     }
 
     get details() {
@@ -32,7 +36,7 @@ export default class SncfParser extends HtmlTree {
 
         return {
             price: parseFloat(price || '0'),
-            roundTrips: [],
+            roundTrips: this.roundtrips,
         };
     }
 

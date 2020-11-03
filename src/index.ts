@@ -1,7 +1,7 @@
-import { pipe, pickAt } from './util/fp/core';
+import { pipe, pickAt, prop } from './util/fp/core';
 import { map } from './util/fp/task';
 
-import { readerTask, write } from './services/fileService';
+import { readTask, writeTask } from './services/fileService';
 import SncfParser from './parser/SncfParser';
 
 const { argv } = process;
@@ -13,10 +13,11 @@ export const clean = pipe(
     (i: string) => i.replace(/\\"/g, '"'),
 );
 
-const getInputStringAsync = pipe(
-    pickAt(2),
-    readerTask,
-    map(pipe(String, clean)),
+const getInputStringAsync = pipe(pickAt(2), readTask, map(pipe(String, clean)));
+
+const getParsedJson = pipe(
+    getInputStringAsync,
+    map(pipe(SncfParser.of, prop('parsedData'))),
 );
 
 if (require.main === module) {
@@ -28,14 +29,21 @@ if (require.main === module) {
         );
         process.exit(1);
     }
+    const path = argv.length === 4 ? argv[3] : './tmp/out.json';
 
-    getInputStringAsync(argv).fork(console.error, (data: string) => {
-        const tree = SncfParser.of(data);
-        const outputJson = {
-            status: 'ok',
-            result: tree.parsedData,
-        };
-        const path = argv.length === 4 ? argv[3] : './tmp/out.json';
-        write(path, JSON.stringify(outputJson, null, 2), () => {});
-    });
+    getParsedJson(argv)
+        .map(
+            pipe(
+                (json: string) => ({
+                    status: 'ok',
+                    result: json,
+                }),
+                (i) => JSON.stringify(i, null, 2),
+            ),
+        )
+        .chain(writeTask(path))
+        .fork(console.error, (outputJson: string) => {
+            console.log(outputJson);
+            console.log(`\nfile parsed successfully: ${path}`);
+        });
 }

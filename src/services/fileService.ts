@@ -1,14 +1,13 @@
-import { NoParamCallback, readFile, writeFile } from 'fs';
+import { readFile, writeFile } from 'fs';
 
 import Task from '../util/fp/task';
 
-export const readerTask = (filename: string) =>
-    new Task((reject: Function, result: Function) => {
-        readFile(filename, (err, data) => (err ? reject(err) : result(data)));
+export const readTask = (filename: string) =>
+    new Task((reject: Function, resolve: Function) => {
+        readFile(filename, (err, data) => (err ? reject(err) : resolve(data)));
     });
 
-export const write = (
-    path: string,
-    outputContent: string,
-    cb: NoParamCallback,
-) => writeFile(path, outputContent, cb);
+export const writeTask = (path: string) => (data: string) =>
+    new Task((reject: Function, resolve: Function) => {
+        writeFile(path, data, (err) => (err ? reject(err) : resolve(data)));
+    });

@@ -2,6 +2,8 @@ export const identity = <A>(x: A): A => x;
 
 export const pickAt = (x: number) => (y: any[]) => y[x];
 
+export const prop = (p: string) => (o: { [i: string]: any }) => o[p];
+
 const _compose = (f: Function, g: Function) => (value: any) => f(g(value));
 export const compose = (...fns: Function[]) => {
     if (fns.length < 1) {

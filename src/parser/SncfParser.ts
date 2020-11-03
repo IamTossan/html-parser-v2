@@ -1,4 +1,4 @@
-import HtmlTree from '../util/htmlTree';
+import HtmlTree, { IHtmlTree } from '../util/htmlTree';
 
 export default class SncfParser extends HtmlTree {
     static parseInput(i: string) {
@@ -9,8 +9,87 @@ export default class SncfParser extends HtmlTree {
         return new SncfParser(SncfParser.parseInput(i));
     }
 
+    getRoundtrip(tree: IHtmlTree, n: number, offset: number) {
+        const commonTree = SncfParser.getNode(tree, [
+            { tagName: 'table', nth: 3 * n + offset + 3 },
+            { tagName: 'tbody', nth: 0 },
+        ]);
+
+        const type = SncfParser.getNode(commonTree, [
+            { tagName: 'tr', nth: 0 },
+            { tagName: 'td', nth: 0 },
+        ]).value?.trim();
+        const date = SncfParser.getNode(tree, [
+            { tagName: 'table', nth: 3 * n + offset + 2 },
+            { tagName: 'tbody', nth: 0 },
+            { tagName: 'tr', nth: 0 },
+            { tagName: 'td', nth: 0 },
+        ]).value?.trim();
+
+        const departureTime = SncfParser.getNode(commonTree, [
+            { tagName: 'tr', nth: 0 },
+            { tagName: 'td', nth: 1 },
+        ])
+            .value?.trim()
+            .replace('h', ':');
+        const departureStation = SncfParser.getNode(commonTree, [
+            { tagName: 'tr', nth: 0 },
+            { tagName: 'td', nth: 2 },
+        ]).value?.trim();
+        const arrivalTime = SncfParser.getNode(commonTree, [
+            { tagName: 'tr', nth: 1 },
+            { tagName: 'td', nth: 0 },
+        ])
+            .value?.trim()
+            .replace('h', ':');
+        const arrivalStation = SncfParser.getNode(commonTree, [
+            { tagName: 'tr', nth: 1 },
+            { tagName: 'td', nth: 1 },
+        ]).value?.trim();
+        const trainType = SncfParser.getNode(commonTree, [
+            { tagName: 'tr', nth: 0 },
+            { tagName: 'td', nth: 3 },
+        ]).value?.trim();
+        const number = SncfParser.getNode(commonTree, [
+            { tagName: 'tr', nth: 0 },
+            { tagName: 'td', nth: 4 },
+        ]).value?.trim();
+        return {
+            type,
+            date,
+            trains: [
+                {
+                    departureTime,
+                    departureStation,
+                    arrivalTime,
+                    arrivalStation,
+                    type: trainType,
+                    number,
+                },
+            ],
+        };
+    }
+
     get roundtrips() {
-        return [];
+        const commonTree = SncfParser.getNode(this._tree, [
+            { tagName: 'html', nth: 0 },
+            { tagName: 'body', nth: 0 },
+            { tagName: 'div', nth: 0 },
+            { tagName: 'table', nth: 1 },
+            { tagName: 'tbody', nth: 0 },
+            { tagName: 'tr', nth: 0 },
+            { tagName: 'td', nth: 0 },
+            { tagName: 'table', nth: 0 },
+            { tagName: 'tbody', nth: 0 },
+            { tagName: 'tr', nth: 0 },
+            { tagName: 'td', nth: 0 },
+        ]);
+
+        return [0, 1, 2, 3].map((n, idx) => {
+            const offset = Math.floor(idx / 2);
+            console.log(idx, offset);
+            return this.getRoundtrip(commonTree, n, offset);
+        });
     }
 
     get details() {

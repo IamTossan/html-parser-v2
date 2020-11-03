@@ -17,7 +17,7 @@ const getInnerText = (s: string): string => {
     return !parts.length ? '' : parts[1];
 };
 
-type IHtmlTree = {
+export type IHtmlTree = {
     tagName: string;
     children: Array<IHtmlTree>;
     value?: string;
